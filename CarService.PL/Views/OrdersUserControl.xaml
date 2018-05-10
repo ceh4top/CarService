@@ -1,0 +1,112 @@
+﻿<UserControl x:Class="CarService.PL.Views.OrdersUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CarService.PL.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="600" Background="White">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <TabControl x:Name="Filters">
+            <TabItem x:Name="SortTab">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="3">Сортировка</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <StackPanel Orientation="Horizontal" Width="515" Height="25">
+                        <ComboBox Name="SortList" Width="150"></ComboBox>
+                        <ComboBox Name="Sort" Width="150" Margin="5px 0">
+                            <TextBlock>По возрастанию</TextBlock>
+                            <TextBlock>По убыванию</TextBlock>
+                        </ComboBox>
+                        <Button Name="SortButton" Width="100" Click="Apply">Применить</Button>
+                        <Button Name="SortClear" Width="100" Margin="5px 0" Click="Clear">Сбросить</Button>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem x:Name="FilterTab">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="3">Фильтрация</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <StackPanel Orientation="Horizontal" Width="515" Height="25">
+                        <ComboBox Name="FilterList" Width="150" SelectionChanged="FilterLoad"></ComboBox>
+                        <ComboBox Name="Filter" Width="150" Margin="5px 0"></ComboBox>
+                        <Button Name="FilterButton" Width="100" Click="Apply">Применить</Button>
+                        <Button Name="FilterClear" Width="100" Margin="5px 0" Click="Clear">Сбросить</Button>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+            <TabItem x:Name="SearchTab">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="3">Поиск</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <StackPanel Orientation="Horizontal" Width="515" Height="25">
+                        <ComboBox Name="SearchList" Width="150"></ComboBox>
+                        <TextBox Name="Search" Width="150" Margin="5px 0"></TextBox>
+                        <Button Name="SearchButton" Width="100" Click="Apply">Применить</Button>
+                        <Button Name="SearchClear" Width="100" Margin="5px 0" Click="Clear">Сбросить</Button>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+        </TabControl>
+
+        <DataGrid Grid.Row="1" Name="Table" AutoGenerateColumns="False" ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder}" CanUserAddRows="False" CanUserDeleteRows="False" ColumnWidth="*" IsReadOnly="True">
+            <DataGrid.Columns x:Uid="{Binding Path=Id}">
+                <DataGridTextColumn Binding="{Binding Path=Id}" Header="№"/>
+                <DataGridTextColumn Binding="{Binding Path=Brand}" Header="Марка"/>
+                <DataGridTextColumn Binding="{Binding Path=Model}" Header="Модель"/>
+                <DataGridTextColumn Binding="{Binding Path=YearOfManufacture}" Header="Год выпуска авто"/>
+                <DataGridTextColumn Binding="{Binding Path=TransmissionType}" Header="Тип трансмиссии"/>
+                <DataGridTextColumn Binding="{Binding Path=EnginePower}" Header="Мощность двигателя"/>
+                <DataGridTextColumn Binding="{Binding Path=Works}" Header="Наименование работ"/>
+                <DataGridTextColumn Binding="{Binding Path=Start}" Header="Начало"/>
+                <DataGridTextColumn Binding="{Binding Path=End}" Header="Конец"/>
+                <DataGridTextColumn Binding="{Binding Path=Cost}" Header="Стоимость"/>
+            </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="ToolTip">
+                        <Setter.Value>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Фамилия: "/>
+                                    <TextBlock Text="{Binding Path=CarOwner.LastName}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Имя: "/>
+                                    <TextBlock Text="{Binding Path=CarOwner.FirstName}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Отчество: "/>
+                                    <TextBlock Text="{Binding Path=CarOwner.MiddleName}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Год рождения: "/>
+                                    <TextBlock Text="{Binding Path=CarOwner.YearOfBirth}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Телефон: "/>
+                                    <TextBlock Text="{Binding Path=CarOwner.PhoneNumber}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.RowStyle>
+        </DataGrid>
+    </Grid>
+</UserControl>
