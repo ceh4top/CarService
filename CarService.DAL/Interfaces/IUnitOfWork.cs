@@ -8,7 +8,6 @@ namespace CarService.DAL.Interfaces
         IRepository<CarModel> CarModels { get; }
         IRepository<CarBrand> CarBrands { get; }
         IRepository<CarTransmissionType> CarTransmissionTypes { get; }
-        IRepository<Human> Humans { get; }
         IRepository<CarOwner> CarOwners { get; }
         IRepository<Car> Cars { get; }
         IRepository<Order> Orders { get; }

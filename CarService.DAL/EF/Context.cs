@@ -10,7 +10,6 @@ namespace CarService.DAL.EF
         public DbSet<CarModel> CarModels { get; set; }
         public DbSet<CarBrand> CarBrands { get; set; }
         public DbSet<CarTransmissionType> CarTransmissionTypes { get; set; }
-        public DbSet<Human> Humens { get; set; }
         public DbSet<CarOwner> CarOwners { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<Order> Orders { get; set; }

@@ -33,9 +33,6 @@ namespace CarService.DAL.Repositories
         private Repository<CarTransmissionType> carTransmissionTypes;
         public IRepository<CarTransmissionType> CarTransmissionTypes => carTransmissionTypes ?? (carTransmissionTypes = new Repository<CarTransmissionType>(DB));
 
-        private Repository<Human> humans;
-        public IRepository<Human> Humans => humans ?? (humans = new Repository<Human>(DB));
-
         private Repository<Order> orders;
         public IRepository<Order> Orders => orders ?? (orders = new Repository<Order>(DB));
 

@@ -22,7 +22,7 @@ namespace CarService.DAL.Models
 
         public List<Work> WorksList => OrderWorks.Select(x => x.Work).ToList();
 
-        public string Works => this.WorksList.Select(x => x.Name).Aggregate((x, y) => x + ", " + y);
+        public string Works => (this.WorksList.Count > 0) ? this.WorksList.Select(x => x.Name).Aggregate((x, y) => x + ", " + y) : "";
         public DateTime? Start => OrderWorks.Min(x => x.Start);
         public DateTime? End => (OrderWorks.Any(x => x.End == null)) ? null : OrderWorks.Max(x => x.End);
         public double Cost => OrderWorks.ToList().Sum(x => x.Work.Price);

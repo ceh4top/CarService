@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
-using CarService.BL.ViewModels;
+using System.Windows.Input;
+using CarService.PL.ViewModels;
 
 namespace CarService.PL.Views
 {
@@ -36,6 +38,9 @@ namespace CarService.PL.Views
             this.SortFilterSearch[0, 0] = (string)this.SortList.SelectedItem;
             this.SortFilterSearch[1, 0] = (string)this.FilterList.SelectedItem;
             this.SortFilterSearch[2, 0] = (string)this.SearchList.SelectedItem;
+
+            LinesCount.Text = "9";
+            UpdateDataPage();
         }
 
         private void FilterLoad(object sender, SelectionChangedEventArgs e)
@@ -72,15 +77,22 @@ namespace CarService.PL.Views
             {
                 case "SortButton":
                     this.SortFilterSearch[0, 0] = (string)this.SortList.SelectedItem;
-                    this.SortFilterSearch[0, 1] = ((TextBlock)Sort.SelectedItem).Text;
+
+                    if (Sort.SelectedItem == null) MessageBox.Show("Выберете порядок сортировки");
+                    else this.SortFilterSearch[0, 1] = ((TextBlock)Sort.SelectedItem).Text;
+
                     break;
                 case "FilterButton":
                     this.SortFilterSearch[1, 0] = (string)this.FilterList.SelectedItem;
-                    this.SortFilterSearch[1, 1] = Filter.SelectedItem.ToString();
+
+                    if (Filter.SelectedItem == null) MessageBox.Show("Выберете значение для фильтрации");
+                    else this.SortFilterSearch[1, 1] = Filter.SelectedItem.ToString();
+                    
                     break;
                 case "SearchButton":
                     this.SortFilterSearch[2, 0] = (string)this.SearchList.SelectedItem;
                     this.SortFilterSearch[2, 1] = Search.Text;
+                    
                     break;
             }
             UpdateData();
@@ -89,8 +101,74 @@ namespace CarService.PL.Views
         private void UpdateData()
         {
             this.OrdersVM.UpdateOrders(this.SortFilterSearch);
+            UpdateDataPage();
+        }
+
+        private void NumberOnly(object sender, TextCompositionEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+
+            e.Handled = !(Char.IsDigit(e.Text, 0));
+            if (!e.Handled)
+                e.Handled = (textBox.Text.Length > 5);
+        }
+
+        private void CheckKey(object sender, KeyEventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+            switch(e.Key)
+            {
+                case Key.Return:
+                    UnfocusElement.Focus();
+                    return;
+            }
+        }
+
+        private void LostFocus(object sender, RoutedEventArgs e)
+        {
+            UpdateDataPage();
+        }
+
+        private void CheckCount()
+        {
+            LinesCount.Text = (LinesCount.Text == "" || Convert.ToInt32(LinesCount.Text) == 0) ? "1" : LinesCount.Text;
+            int LinesCountInt = Convert.ToInt32(LinesCount.Text);
+
+            if (LinesCountInt > OrdersVM.Count)
+            {
+                LinesCountInt = OrdersVM.Count;
+                LinesCount.Text = LinesCountInt.ToString();
+            }
+
+            PageNumber.Text = (PageNumber.Text == "" || Convert.ToInt32(PageNumber.Text) == 0) ? "1" : PageNumber.Text;
+            int PageNumberInt = Convert.ToInt32(PageNumber.Text);
+
+            int PagesCountInt = (int)Math.Ceiling((double)OrdersVM.Count / LinesCountInt);
+
+            if (PageNumberInt > PagesCountInt)
+            {
+                PageNumberInt = PagesCountInt;
+                PageNumber.Text = PageNumberInt.ToString();
+            }
+
+            PagesCount.Text = PagesCountInt.ToString();
+        }
+
+        private void UpdateDataPage()
+        {
+            CheckCount();
+
+            int LinesCountInt = Convert.ToInt32(LinesCount.Text);
+            int PageNumberInt = Convert.ToInt32(PageNumber.Text);
+
             this.Table.DataContext = null;
+            this.OrdersVM.UpdateOrdersPage(LinesCountInt, PageNumberInt);
             this.Table.DataContext = this.OrdersVM;
+        }
+
+        private void GoToStatistics(object sender, RoutedEventArgs e)
+        {
+            MainWindow.I.ChangeView(StatisticsUserControl.I);
         }
     }
 }

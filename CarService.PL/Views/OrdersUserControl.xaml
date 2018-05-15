@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:CarService.PL.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600" Background="White">
 
@@ -11,9 +10,14 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="75"></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition Height="25"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TabControl x:Name="Filters">
+
+        <Button Name="Statistic" Click="GoToStatistics" Panel.ZIndex="1" Width="100" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,5,5,0">
+            Статистика
+        </Button>
+        <TabControl Grid.Row="0" x:Name="Filters">
             <TabItem x:Name="SortTab">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -64,8 +68,8 @@
             </TabItem>
         </TabControl>
 
-        <DataGrid Grid.Row="1" Name="Table" AutoGenerateColumns="False" ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder}" CanUserAddRows="False" CanUserDeleteRows="False" ColumnWidth="*" IsReadOnly="True">
-            <DataGrid.Columns x:Uid="{Binding Path=Id}">
+        <DataGrid Grid.Row="1" Name="Table" AutoGenerateColumns="False" ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder}" CanUserAddRows="False" CanUserDeleteRows="False" RowHeight="30" ColumnWidth="*" IsReadOnly="True">
+            <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=Id}" Header="№"/>
                 <DataGridTextColumn Binding="{Binding Path=Brand}" Header="Марка"/>
                 <DataGridTextColumn Binding="{Binding Path=Model}" Header="Модель"/>
@@ -84,23 +88,23 @@
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Фамилия: "/>
-                                    <TextBlock Text="{Binding Path=CarOwner.LastName}"/>
+                                    <TextBlock Text="{Binding Path=LastName}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Имя: "/>
-                                    <TextBlock Text="{Binding Path=CarOwner.FirstName}"/>
+                                    <TextBlock Text="{Binding Path=FirstName}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Отчество: "/>
-                                    <TextBlock Text="{Binding Path=CarOwner.MiddleName}"/>
+                                    <TextBlock Text="{Binding Path=MiddleName}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Год рождения: "/>
-                                    <TextBlock Text="{Binding Path=CarOwner.YearOfBirth}"/>
+                                    <TextBlock Text="{Binding Path=YearOfBirth}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Телефон: "/>
-                                    <TextBlock Text="{Binding Path=CarOwner.PhoneNumber}"/>
+                                    <TextBlock Text="{Binding Path=PhoneNumber}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Setter.Value>
@@ -108,5 +112,15 @@
                 </Style>
             </DataGrid.RowStyle>
         </DataGrid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Height="20">
+            <TextBox IsReadOnly="True" BorderThickness="0" ClipToBounds="True">Количествово элементов на странице:</TextBox>
+            <TextBox x:Name="LinesCount" Margin="5 0" MinWidth="50" TextAlignment="Center" PreviewTextInput="NumberOnly" KeyUp="CheckKey" LostFocus="LostFocus" Text="1"/>
+            <TextBox IsReadOnly="True" BorderThickness="0" ClipToBounds="True">Номер страницы:</TextBox>
+            <TextBox Name="PageNumber" Margin="5 0" MinWidth="50" TextAlignment="Center" PreviewTextInput="NumberOnly" KeyUp="CheckKey" LostFocus="LostFocus">1</TextBox>
+            <TextBox IsReadOnly="True" BorderThickness="0" ClipToBounds="True">Всего страниц:</TextBox>
+            <TextBox Name="PagesCount" IsReadOnly="True" BorderThickness="0" ClipToBounds="True">1</TextBox>
+            <TextBox Width="0" Height="0" x:Name="UnfocusElement" />
+        </StackPanel>
     </Grid>
 </UserControl>

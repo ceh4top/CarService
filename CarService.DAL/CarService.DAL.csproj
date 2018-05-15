@@ -65,25 +65,16 @@
     <Compile Include="EF\Context.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
-    <Compile Include="Migrations\201805080849180_M1.cs" />
-    <Compile Include="Migrations\201805080849180_M1.Designer.cs">
-      <DependentUpon>201805080849180_M1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805082149028_M2.cs" />
-    <Compile Include="Migrations\201805082149028_M2.Designer.cs">
-      <DependentUpon>201805082149028_M2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201805101925048_M3.cs" />
-    <Compile Include="Migrations\201805101925048_M3.Designer.cs">
-      <DependentUpon>201805101925048_M3.cs</DependentUpon>
+    <Compile Include="Migrations\201805142126171_M1.cs" />
+    <Compile Include="Migrations\201805142126171_M1.Designer.cs">
+      <DependentUpon>201805142126171_M1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\CarBrand.cs" />
     <Compile Include="Models\CarModel.cs" />
-    <Compile Include="Models\CarOwner.cs" />
     <Compile Include="Models\CarTransmissionType.cs" />
-    <Compile Include="Models\Human.cs" />
+    <Compile Include="Models\CarOwner.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderWorks.cs" />
     <Compile Include="Models\Work.cs" />
@@ -94,6 +85,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Database\CarService_Database.bak" />
+    <None Include="Database\CarService_Database2.bak" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -104,16 +96,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201805080849180_M1.resx">
-      <DependentUpon>201805080849180_M1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805082149028_M2.resx">
-      <DependentUpon>201805082149028_M2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805101925048_M3.resx">
-      <DependentUpon>201805101925048_M3.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805142126171_M1.resx">
+      <DependentUpon>201805142126171_M1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
