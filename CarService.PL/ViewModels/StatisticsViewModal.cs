@@ -32,7 +32,7 @@ namespace CarService.PL.ViewModels
             this.properties.Add("Работы", new string[] { "Заказы", "Деньги", "Марки", "Модели" });
             this.properties.Add("Марки", new string[] { "Заказы", "Деньги", "Работы", "Модели" });
             this.properties.Add("Модели", new string[] { "Заказы", "Деньги", "Работы" });
-            this.properties.Add("Клиенты", new string[] { "Заказы", "Деньги", "Работы" });
+            this.properties.Add("Клиенты", new string[] { "Заказы", "Деньги", "Работы", "Машины" });
 
             IEnumerable<Order> orders = EFUnitOfWork.I.Orders.GetAll();
             this.statisticList = orders.OrderBy(x => x.Id).Select(x => new StatisticViewModel(x)).ToList();
@@ -83,6 +83,7 @@ namespace CarService.PL.ViewModels
                 case "Марки":
                     list = dictionary.Select(x => new Element() { Name = x.Key, Count = x.Value.Select(s => s.Brand).Distinct().Count() }).ToList();
                     break;
+                case "Машины":
                 case "Модели":
                     list = dictionary.Select(x => new Element() { Name = x.Key, Count = x.Value.Select(s => s.Model).Distinct().Count() }).ToList();
                     break;
