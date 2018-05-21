@@ -52,52 +52,43 @@ namespace CarService.PL.ViewModels
             switch (FilterItem)
             {
                 case "Марка":
-                    Result = this.ordersList.Select(x => x.Brand);
+                    Result = this.ordersList.Select(x => x.Brand).OrderBy(x => x);
                     break;
                 case "Модель":
-                    Result = this.ordersList.Select(x => x.Model);
+                    Result = this.ordersList.Select(x => x.Model).OrderBy(x => x);
                     break;
                 case "Год выпуска авто":
-                    Result = this.ordersList.Select(x => x.YearOfManufactureSort);
+                    Result = this.ordersList.OrderBy(x => x.YearOfManufactureSort).Select(x => x.YearOfManufacture);
                     break;
                 case "Тип трансмиссии":
-                    Result = this.ordersList.Select(x => x.TransmissionType);
+                    Result = this.ordersList.Select(x => x.TransmissionType).OrderBy(x => x);
                     break;
                 case "Мощность двигателя":
-                    Result = this.ordersList.Select(x => (object)x.EnginePower);
+                    Result = this.ordersList.OrderBy(x => x.EnginePower).Select(x => x.EnginePower.ToString());
                     break;
                 case "Наименование работ":
                     List<string> Temp = new List<string>();
                     foreach (List<string> list in this.ordersList.Select(x => x.WorksSort))
                         foreach (string element in list)
                             Temp.Add(element);
-                    Result = Temp;
+                    Result = Temp.OrderBy(x => x);
                     break;
                 case "Начало":
-                    Result = this.ordersList.Select(x => x.StartSort);
+                    Result = this.ordersList.OrderBy(x => x.StartSort).Select(x => x.Start);
                     break;
                 case "Конец":
-                    Result = this.ordersList.Select(x => x.EndSort);
+                    Result = this.ordersList.OrderBy(x => x.EndSort).Select(x => x.End);
                     break;
                 case "Стоимость":
-                    Result = this.ordersList.Select(x => (object)x.CostSort);
+                    Result = this.ordersList.OrderBy(x => x.CostSort).Select(x => x.Cost);
                     break;
                 default:
-                    Result = this.ordersList.Select(x => (object)x.Id);
+                    Result = this.ordersList.OrderBy(x => x.Id).Select(x => x.Id.ToString());
                     break;
             }
 
             Result = Result.Distinct();
             int Count = Result.Count();
-
-            if (Count > 0 && Result.First() is string)
-            {
-                Result = Result.OrderBy(x => (string)x);
-            }
-            else if (Count > 0)
-            {
-                Result = Result.OrderBy(x => (int)x);
-            }
 
             return Result.ToArray();
         }
@@ -107,8 +98,14 @@ namespace CarService.PL.ViewModels
             int Start = CountItems * (PageNumber - 1);
             int End = CountItems * PageNumber;
 
+            if (Start < 0)
+                Start = 0;
+
+            if (End > this.Count)
+                End = this.Count;
+
             List<OrderViewModel> list = new List<OrderViewModel>();
-            for (int i = Start; i < End && i < this.Count; i++)
+            for (int i = Start; i < End; i++)
                 list.Add(ordersList[i]);
 
             this.orders = new ObservableCollection<OrderViewModel>(list);
@@ -155,7 +152,6 @@ namespace CarService.PL.ViewModels
                                     ? this.ordersList.OrderBy(x => x.YearOfManufactureSort)
                                     : this.ordersList.OrderByDescending(x => x.YearOfManufactureSort))
                                     .ToList(); break;
-                            case 1: this.ordersList = this.ordersList.Where(x => x.YearOfManufacture == Property[i, 1]).ToList(); break;
                             default: this.ordersList = this.ordersList.Where(x => x.YearOfManufacture.Contains(Property[i, 1])).ToList(); break;
                         }
                         break;
@@ -179,7 +175,7 @@ namespace CarService.PL.ViewModels
                                     ? this.ordersList.OrderBy(x => x.EnginePower)
                                     : this.ordersList.OrderByDescending(x => x.EnginePower))
                                     .ToList(); break;
-                            default: this.ordersList = this.ordersList.Where(x => x.EnginePower == Convert.ToInt32(Property[i, 1])).ToList(); break;
+                            default: this.ordersList = this.ordersList.Where(x => x.EnginePower.ToString() == Property[i, 1]).ToList(); break;
                         }
                         break;
                     case "Наименование работ":
@@ -223,7 +219,7 @@ namespace CarService.PL.ViewModels
                                     ? this.ordersList.OrderBy(x => x.CostSort)
                                     : this.ordersList.OrderByDescending(x => x.CostSort))
                                     .ToList(); break;
-                            default: this.ordersList = this.ordersList.Where(x => x.CostSort == Convert.ToInt32(Property[i, 1])).ToList(); break;
+                            default: this.ordersList = this.ordersList.Where(x => x.CostSort.ToString() == Property[i, 1]).ToList(); break;
                         }
                         break;
                     default:
@@ -234,7 +230,7 @@ namespace CarService.PL.ViewModels
                                     ? this.ordersList.OrderBy(x => x.Id)
                                     : this.ordersList.OrderByDescending(x => x.Id))
                                     .ToList(); break;
-                            default: this.ordersList = this.ordersList.Where(x => x.Id == Convert.ToInt32(Property[i, 1])).ToList(); break;
+                            default: this.ordersList = this.ordersList.Where(x => x.Id.ToString() == Property[i, 1]).ToList(); break;
                         }
                         break;
                 }

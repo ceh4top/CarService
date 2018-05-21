@@ -84,6 +84,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
     <None Include="Database\CarService_Database.bak" />
     <None Include="Database\CarService_Database2.bak" />
     <None Include="packages.config" />

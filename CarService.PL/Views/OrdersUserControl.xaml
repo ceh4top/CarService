@@ -60,7 +60,7 @@
                 <TabItem.Content>
                     <StackPanel Orientation="Horizontal" Width="515" Height="25">
                         <ComboBox Name="SearchList" Width="150"></ComboBox>
-                        <TextBox Name="Search" Width="150" Margin="5px 0"></TextBox>
+                        <TextBox Name="Search" Width="150" Margin="5px 0" KeyUp="CheckKey"></TextBox>
                         <Button Name="SearchButton" Width="100" Click="Apply">Применить</Button>
                         <Button Name="SearchClear" Width="100" Margin="5px 0" Click="Clear">Сбросить</Button>
                     </StackPanel>
@@ -99,7 +99,7 @@
                                     <TextBlock Text="{Binding Path=MiddleName}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Год рождения: "/>
+                                    <TextBlock Text="Дата рождения: "/>
                                     <TextBlock Text="{Binding Path=YearOfBirth}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
@@ -115,7 +115,7 @@
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" Height="20">
             <TextBox IsReadOnly="True" BorderThickness="0" ClipToBounds="True">Количествово элементов на странице:</TextBox>
-            <TextBox x:Name="LinesCount" Margin="5 0" MinWidth="50" TextAlignment="Center" PreviewTextInput="NumberOnly" KeyUp="CheckKey" LostFocus="LostFocus" Text="1"/>
+            <TextBox Name="LinesCount" Margin="5 0" MinWidth="50" TextAlignment="Center" PreviewTextInput="NumberOnly" KeyUp="CheckKey" LostFocus="LostFocus" Text="1"/>
             <TextBox IsReadOnly="True" BorderThickness="0" ClipToBounds="True">Номер страницы:</TextBox>
             <TextBox Name="PageNumber" Margin="5 0" MinWidth="50" TextAlignment="Center" PreviewTextInput="NumberOnly" KeyUp="CheckKey" LostFocus="LostFocus">1</TextBox>
             <TextBox IsReadOnly="True" BorderThickness="0" ClipToBounds="True">Всего страниц:</TextBox>

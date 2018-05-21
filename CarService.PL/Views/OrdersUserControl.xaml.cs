@@ -104,6 +104,9 @@ namespace CarService.PL.Views
             UpdateDataPage();
         }
 
+        private bool ChangeLinesCount = false;
+        private int LinesCountInt = 9;
+        private int PageNumberInt = 1;
         private void NumberOnly(object sender, TextCompositionEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
@@ -111,6 +114,9 @@ namespace CarService.PL.Views
             e.Handled = !(Char.IsDigit(e.Text, 0));
             if (!e.Handled)
                 e.Handled = (textBox.Text.Length > 5);
+
+            if (textBox.Name == "LinesCount")
+                ChangeLinesCount = true;
         }
 
         private void CheckKey(object sender, KeyEventArgs e)
@@ -131,8 +137,33 @@ namespace CarService.PL.Views
 
         private void CheckCount()
         {
-            LinesCount.Text = (LinesCount.Text == "" || Convert.ToInt32(LinesCount.Text) == 0) ? "1" : LinesCount.Text;
-            int LinesCountInt = Convert.ToInt32(LinesCount.Text);
+            LinesCount.Text = (LinesCount.Text == "") ? "0" : LinesCount.Text;
+
+            int LinesCountInt = this.LinesCountInt;
+
+            try
+            {
+                LinesCountInt = Convert.ToInt32(LinesCount.Text);
+                if (LinesCountInt > 999999)
+                {
+                    MessageBox.Show("Число должно быть меньше 1000000!");
+                    LinesCount.Text = this.LinesCountInt.ToString();
+                    return;
+                }
+            } catch
+            {
+                MessageBox.Show("В поле \"Количество элементов на странице\" должно быть введено только целочисленное значение!");
+                LinesCount.Text = this.LinesCountInt.ToString();
+                return;
+            }
+
+            if (LinesCountInt < this.LinesCountInt && !ChangeLinesCount)
+            {
+                LinesCountInt = this.LinesCountInt;
+                LinesCount.Text = LinesCountInt.ToString();
+            }
+            else if (ChangeLinesCount)
+                this.LinesCountInt = LinesCountInt;
 
             if (LinesCountInt > OrdersVM.Count)
             {
@@ -140,10 +171,36 @@ namespace CarService.PL.Views
                 LinesCount.Text = LinesCountInt.ToString();
             }
 
-            PageNumber.Text = (PageNumber.Text == "" || Convert.ToInt32(PageNumber.Text) == 0) ? "1" : PageNumber.Text;
-            int PageNumberInt = Convert.ToInt32(PageNumber.Text);
+            PageNumber.Text = (PageNumber.Text == "") ? "0" : PageNumber.Text;
 
-            int PagesCountInt = (int)Math.Ceiling((double)OrdersVM.Count / LinesCountInt);
+            int PageNumberInt = 1;
+
+            try
+            {
+                PageNumberInt = Convert.ToInt32(PageNumber.Text);
+                if (PageNumberInt > 999999)
+                {
+                    MessageBox.Show("Число должно быть меньше 1000000!");
+                    PageNumber.Text = this.PageNumberInt.ToString();
+                    return;
+                }
+            }
+            catch
+            {
+                MessageBox.Show("В поле \"Номер страницы\" должно быть введено только целочисленное значение!");
+                PageNumber.Text = this.PageNumberInt.ToString();
+                return;
+            }
+
+            this.PageNumberInt = PageNumberInt;
+
+            int PagesCountInt = (int)Math.Ceiling((double)OrdersVM.Count / ((LinesCountInt == 0) ? 1 : LinesCountInt));
+
+            if (PageNumberInt < 1 && PagesCountInt >= 1)
+            {
+                PageNumberInt = 1;
+                PageNumber.Text = PageNumberInt.ToString();
+            }
 
             if (PageNumberInt > PagesCountInt)
             {
@@ -164,6 +221,8 @@ namespace CarService.PL.Views
             this.Table.DataContext = null;
             this.OrdersVM.UpdateOrdersPage(LinesCountInt, PageNumberInt);
             this.Table.DataContext = this.OrdersVM;
+
+            ChangeLinesCount = false;
         }
 
         private void GoToStatistics(object sender, RoutedEventArgs e)

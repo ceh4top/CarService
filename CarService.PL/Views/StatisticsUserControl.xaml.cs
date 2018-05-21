@@ -18,7 +18,7 @@ namespace CarService.PL.Views
         private static StatisticsUserControl instance;
         public static StatisticsUserControl I => instance ?? (instance = new StatisticsUserControl());
 
-        private StatisticsViewModal statistics;
+        private StatisticsViewModel statistics;
 
         public StatisticsUserControl()
         {
@@ -26,7 +26,7 @@ namespace CarService.PL.Views
             this.SeriesCollection = new SeriesCollection();
             this.ColumnSeriesCollection = new SeriesCollection();
 
-            this.statistics = new StatisticsViewModal();
+            this.statistics = new StatisticsViewModel();
 
             this.TypeChart.ItemsSource = new string[] { "Круговая", "В виде столбцов" };
             this.TypeChart.SelectedIndex = 0;
@@ -39,7 +39,7 @@ namespace CarService.PL.Views
 
             this.SeriesCollection = new SeriesCollection();
 
-            foreach (StatisticsViewModal.Element element in statistics
+            foreach (StatisticsViewModel.Element element in statistics
                 .getList((string)this.NamePoints.SelectedItem, (string)this.ValuePoints.SelectedItem))
                 this.SeriesCollection.Add(new PieSeries {
                     Title = element.Name,
@@ -47,7 +47,7 @@ namespace CarService.PL.Views
                     DataLabels = true
                 });
             
-            foreach (StatisticsViewModal.Element element in statistics
+            foreach (StatisticsViewModel.Element element in statistics
                 .getList((string)this.NamePoints.SelectedItem, (string)this.ValuePoints.SelectedItem))
                 this.ColumnSeriesCollection.Add(new ColumnSeries
                 {
@@ -64,7 +64,7 @@ namespace CarService.PL.Views
         private void Apply(object sender, RoutedEventArgs e)
         {
             this.SeriesCollection.Clear();
-            foreach (StatisticsViewModal.Element element in statistics
+            foreach (StatisticsViewModel.Element element in statistics
                 .getList((string)this.NamePoints.SelectedItem, (string)this.ValuePoints.SelectedItem))
                 this.SeriesCollection.Add(new PieSeries
                 {
@@ -74,7 +74,7 @@ namespace CarService.PL.Views
                 });
 
             this.ColumnSeriesCollection.Clear();
-            foreach (StatisticsViewModal.Element element in statistics
+            foreach (StatisticsViewModel.Element element in statistics
                 .getList((string)this.NamePoints.SelectedItem, (string)this.ValuePoints.SelectedItem))
                 this.ColumnSeriesCollection.Add(new ColumnSeries
                 {
